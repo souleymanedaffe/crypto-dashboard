@@ -1,0 +1,14 @@
+# Ignorer l'environnement virtuel
+.venv/
+
+# Fichiers Python temporaires
+__pycache__/
+*.pyc
+*.pyo
+
+# Fichiers d'environnement
+.env
+
+# Autres fichiers inutiles
+*.sqlite3
+*.db

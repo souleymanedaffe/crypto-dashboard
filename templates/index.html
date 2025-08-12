@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Crypto Dashboard{% endblock %}
+{% block content %}
+
+<div class="row g-4">
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-header">Derniers prix</div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table mb-0 align-middle">
+            <thead>
+              <tr>
+                <th>Symbole</th>
+                <th>Date</th>
+                <th>Prix</th>
+                <th>Δ 7j</th>
+                <th>Market Cap</th>
+                <th>Volume</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in snapshot %}
+              <tr>
+                <td><strong>{{ r.symbol }}</strong></td>
+                <td>{{ r.date }}</td>
+                <td>${{ "%.2f"|format(r.price) }}</td>
+                <td>
+                  {% if r.change_7d is not none %}
+                    <span class="{{ 'text-success' if r.change_7d>=0 else 'text-danger' }}">
+                      {{ "%.2f"|format(r.change_7d) }}%
+                    </span>
+                  {% else %}
+                    —
+                  {% endif %}
+                </td>
+                <td>${{ '{:,}'.format(r.market_cap).replace(',', ' ') }}</td>
+                <td>${{ '{:,}'.format(r.volume).replace(',', ' ') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="card shadow-sm">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Évolution du prix</span>
+        <div class="d-flex gap-2">
+          <select id="symbolSelect" class="form-select form-select-sm"></select>
+          <button id="reloadBtn" class="btn btn-sm btn-outline-primary">Recharger</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <canvas id="priceChart" height="120"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
